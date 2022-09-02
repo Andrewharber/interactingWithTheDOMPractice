@@ -1,19 +1,32 @@
-// https://github.com/learn-co-curriculum/phase-1-practice-interacting-with-the-dom
+// https://github.com/Andrewharber/interactingWithTheDOMPractice
+
 
 let count = document.getElementById('counter')
 const minus = document.getElementById('minus')
 const plus = document.getElementById('plus')
 const like = document.getElementById('heart')
 const pause = document.getElementById('pause')
-const sub = document.getElementById('submit')
 let likesClicks = 0
+const sub = document.getElementById('comment-form')
+let number = count.innerText
+let myLikedNum = {
+    number : likesClicks ,
+}
+console.log(Object.values(myLikedNum));
 
 
- const timer = setInterval(() => {
+let timer = setInterval(()=> {
+    prevVal = parseInt(count.innerText);
+    count.innerText = prevVal + 1
+}, 1000);
+
+function startTimer() {
+    timer = setInterval(()=> {
         prevVal = parseInt(count.innerText);
         count.innerText = prevVal + 1
     }, 1000);
 
+}
 
 
 minus.addEventListener('click',(e)=> {
@@ -31,12 +44,13 @@ plus.addEventListener('click',(e)=> {
 function likeNumber() { 
     const ul = document.querySelector('.likes');
     const li = document.createElement('li');
-    likesClicks++
+    ++likesClicks
+
     if ( likesClicks === 1 ){
-    li.innerText = `${count.innerText} has been liked 1 time`;
+        li.innerText = `${count.innerText} has been liked 1 time;`
     }
-    else if (likesClicks > 1) {
-    li.innerText = `${count.innerText} has been liked ${likesClicks} times`
+    else if (likesClicks) {
+        li.innerText = `${count.innerText} has been liked ${likesClicks} times`
     }
     ul.appendChild(li);
 };
@@ -60,33 +74,43 @@ if  (pause.innerText === 'pause') {
         like.disabled = true;
         sub.disabled = true;
         pause.innerText = 'resume';
-        clearInterval(timer)}
+        clearInterval(timer)
+    }
         else if (pause.innerText === 'resume') {
         minus.disabled = false;
         plus.disabled = false;
         like.disabled = false;
         sub.disabled = false;
         pause.innerText = 'pause';
-        setInterval(timer);
+        startTimer();
     }
 }
 
 pause.addEventListener('click',pauseTimer)
 
+document.addEventListener('DOMContentLoaded', () => {
+    const sub = document.getElementById('comment-form')
+    sub.addEventListener('submit',(e) => {
+        addComment(e)
+    })
+})
 
 function addComment(e) {
-    e.preventDefault();
+    e.preventDefault()
+    let form = document.getElementById('comment-form')
     let input = document.getElementById('comment-input').value
-    let comment = document.getElementById('lists')
+    let comment = document.getElementById('list')
     let p = document.createElement('p');
-    p.textContent = inputValue;
+    p.textContent = input;
     comment.appendChild(p);
-    input.reset();
+    form.reset();
 
 }
 
 
-sub.addEventListener('submit',addComment)
+
+
+
 // console.log(addComment)
 // console.log(sub)
 // sub.addEventListener('submit',() => {
