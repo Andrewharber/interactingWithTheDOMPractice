@@ -6,13 +6,8 @@ const minus = document.getElementById('minus')
 const plus = document.getElementById('plus')
 const like = document.getElementById('heart')
 const pause = document.getElementById('pause')
-let likesClicks = 0
 const sub = document.getElementById('comment-form')
-let number = count.innerText
-let myLikedNum = {
-    number : likesClicks ,
-}
-console.log(Object.values(myLikedNum));
+let likes = 0
 
 
 let timer = setInterval(()=> {
@@ -40,25 +35,33 @@ plus.addEventListener('click',(e)=> {
     count.innerText++
 })
 
+const counter = parseInt(count.innerText);
+
+console.log(counter)
+const listLikes = {}
+
 
 function likeNumber() { 
+    const counter = parseInt(count.innerText);
     const ul = document.querySelector('.likes');
-    const li = document.createElement('li');
-    ++likesClicks
+    if (!(counter in listLikes )) {
+        const li = document.createElement('li');
+        listLikes[counter] = 1   
+        li.innerText = `${counter} has been liked 1 time `
+        li.setAttribute('id',counter)
+        ul.appendChild(li);
+    }
+    else if (counter in listLikes) {
+        listLikes[counter] ++
+        document.getElementById(`${counter}`).innerText = `${counter}  has been liked ${listLikes[counter]} times`
+    }
+    
 
-    if ( likesClicks === 1 ){
-        li.innerText = `${count.innerText} has been liked 1 time;`
-    }
-    else if (likesClicks) {
-        li.innerText = `${count.innerText} has been liked ${likesClicks} times`
-    }
-    ul.appendChild(li);
+    console.log(listLikes)
 };
 
 like.addEventListener('click', () => likeNumber())
 
-
-// likesClicks > 1 ? li.innerText = `${count.innerText} has been liked ${likesClicks} times`: li.innerText = `${count.innerText} has been liked 1 time`;
 
 
 
@@ -108,17 +111,4 @@ function addComment(e) {
 }
 
 
-
-
-
-// console.log(addComment)
-// console.log(sub)
-// sub.addEventListener('submit',() => {
-//     preventDefault();
-//     let input = document.getElementById('comment-input').value
-//     let comment = document.getElementById('lists')
-//     let p = document.createElement('p');
-//     p.textContent = inputValue;
-//     comment.appendChild(p);
-//     input.reset();
-// })
+document.addEventListener('submit',addComment)
